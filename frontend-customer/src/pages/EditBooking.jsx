@@ -6,6 +6,7 @@ import Button from '../components/ui/Button';
 import { useAuth } from '../context/AuthContext';
 import { Calendar, Clock, MapPin, Users, ShoppingBag, Trash2, CheckCircle2, ChevronRight, ArrowLeft } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { DEFAULT_HALL_IMAGE } from '../utils/assetUrl';
 
 const EditBooking = () => {
     const { id } = useParams();
@@ -107,7 +108,7 @@ const EditBooking = () => {
                             {booking.halls.map(hall => (
                                 <div key={hall._id} className="bg-white dark:bg-slate-900 p-6 rounded-[2.5rem] border border-slate-100 dark:border-slate-800 shadow-sm flex items-center gap-6 group hover:shadow-xl transition-all">
                                     <div className="w-24 h-24 bg-slate-100 rounded-3xl overflow-hidden shadow-inner">
-                                        <img src={hall.images?.[0]?.url || hall.primaryImage || "http://localhost:5000/uploads/hall_main.png"} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                        <img src={hall.images?.[0]?.url || hall.primaryImage || DEFAULT_HALL_IMAGE} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                     </div>
                                     <div>
                                         <h3 className="font-black text-slate-900 dark:text-white uppercase tracking-tighter text-lg">{hall.name}</h3>

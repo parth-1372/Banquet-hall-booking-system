@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../components/layout/Navbar';
 import api from '../api/axios';
@@ -54,21 +54,35 @@ const HallDetails = () => {
         }
     }, [bookingDate]);
 
+    const viewerRef = useRef(null);
+
     useEffect(() => {
         if (viewMode === '360' && !loading && hall) {
             const timer = setTimeout(() => {
                 if (window.pannellum) {
-                    window.pannellum.viewer('panorama', {
+                    // Destroy existing viewer if it exists
+                    if (viewerRef.current) {
+                        try { viewerRef.current.destroy(); } catch (e) { }
+                    }
+
+                    viewerRef.current = window.pannellum.viewer('panorama', {
                         "type": "equirectangular",
                         "panorama": hall.rotationViewUrl || DEFAULT_360_IMAGE,
                         "autoLoad": true,
                         "autoRotate": -2,
                         "hfov": 110,
+                        "bookmark": false,
                         "crossOrigin": "anonymous"
                     });
                 }
             }, 100);
-            return () => clearTimeout(timer);
+            return () => {
+                clearTimeout(timer);
+                if (viewerRef.current) {
+                    try { viewerRef.current.destroy(); } catch (e) { }
+                    viewerRef.current = null;
+                }
+            };
         }
     }, [viewMode, loading, hall]);
 

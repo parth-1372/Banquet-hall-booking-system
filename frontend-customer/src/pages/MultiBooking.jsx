@@ -6,6 +6,7 @@ import api from '../api/axios';
 import { Calendar, Clock, MapPin, Users, ShoppingBag, Trash2, CheckCircle2, ChevronRight } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { useAuth } from '../context/AuthContext';
+import { DEFAULT_HALL_IMAGE } from '../utils/assetUrl';
 
 const MultiBooking = () => {
     const { user } = useAuth();
@@ -104,7 +105,7 @@ const MultiBooking = () => {
                         {halls.map((hall) => (
                             <div key={hall._id} className="bg-white dark:bg-slate-900 p-4 rounded-[2rem] border border-slate-100 dark:border-slate-800 shadow-sm flex gap-6 group hover:shadow-md transition-shadow">
                                 <div className="w-32 h-32 rounded-2xl overflow-hidden flex-shrink-0">
-                                    <img src={hall.images?.[0]?.url || hall.primaryImage || "http://localhost:5000/uploads/hall_main.png"} className="w-full h-full object-cover" />
+                                    <img src={hall.images?.[0]?.url || hall.primaryImage || DEFAULT_HALL_IMAGE} className="w-full h-full object-cover" />
                                 </div>
                                 <div className="flex-1 py-2">
                                     <h3 className="text-xl font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors">{hall.name}</h3>

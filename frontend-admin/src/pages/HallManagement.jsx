@@ -8,6 +8,7 @@ import {
     MapPin, Users, Star, CheckCircle, XCircle, Image
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { DEFAULT_HALL_IMAGE, DEFAULT_360_IMAGE } from '../utils/assetUrl';
 
 const HallManagement = () => {
     const [halls, setHalls] = useState([]);
@@ -123,8 +124,8 @@ const HallManagement = () => {
                     ? (typeof formData.images === 'string'
                         ? formData.images.split(',').map(s => ({ url: s.trim(), isPrimary: false }))
                         : formData.images.map(img => typeof img === 'string' ? { url: img, isPrimary: false } : img))
-                    : [{ url: 'http://localhost:5000/uploads/hall_main.png', isPrimary: true }],
-                rotationViewUrl: formData.rotationViewUrl || 'http://localhost:5000/uploads/hall_360.png',
+                    : [{ url: DEFAULT_HALL_IMAGE, isPrimary: true }],
+                rotationViewUrl: formData.rotationViewUrl || DEFAULT_360_IMAGE,
                 amenities: ['AC', 'Stage', 'Parking', 'Catering'],
                 isActive: true,
                 isFeatured: false
