@@ -45,59 +45,61 @@ const Home = () => {
             <Navbar />
 
             {/* Hero Section */}
-            <header className="relative py-20 lg:py-32 overflow-hidden">
+            <header className="relative py-12 sm:py-16 lg:py-32 overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-full -z-10 bg-[radial-gradient(circle_at_top_right,rgba(77,119,255,0.1),transparent_50%)]" />
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex flex-col lg:flex-row items-center gap-12">
+                    <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
                         <div className="flex-1 text-center lg:text-left">
-                            <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-semibold mb-6">
-                                <Star className="w-4 h-4 fill-primary" />
+                            <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-full text-xs sm:text-sm font-semibold mb-4 sm:mb-6">
+                                <Star className="w-3 h-3 sm:w-4 sm:h-4 fill-primary" />
                                 Top Rated Banquet Hall Booking
                             </div>
-                            <h1 className="text-5xl lg:text-7xl font-bold text-slate-900 dark:text-white leading-[1.1] mb-6">
+                            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold text-slate-900 dark:text-white leading-[1.1] mb-4 sm:mb-6">
                                 Make Your <span className="text-primary">Special Moments</span> Unforgettable
                             </h1>
-                            <p className="text-lg text-slate-600 dark:text-slate-400 mb-10 max-w-2xl mx-auto lg:mx-0">
+                            <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 mb-6 sm:mb-10 max-w-2xl mx-auto lg:mx-0">
                                 Discover and book the perfect venue for weddings, conferences, and celebrations.
                                 Premium halls, seamless booking, and exceptional service.
                             </p>
                             <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
-                                <Link to="/halls">
-                                    <Button className="w-full sm:w-auto h-14 px-10 text-lg">
-                                        Browse Halls <ChevronRight className="ml-2 w-5 h-5 inline" />
+                                <Link to="/halls" className="w-full sm:w-auto">
+                                    <Button className="w-full sm:w-auto h-12 sm:h-14 px-8 sm:px-10 text-base sm:text-lg">
+                                        Browse Halls <ChevronRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5 inline" />
                                     </Button>
                                 </Link>
-                                <div className="flex -space-x-3 overflow-hidden ml-4">
-                                    {[1, 2, 3, 4].map((i) => (
-                                        <img
-                                            key={i}
-                                            className="inline-block h-10 w-10 rounded-full ring-2 ring-white"
-                                            src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i}`}
-                                            alt="User avatar"
-                                        />
-                                    ))}
-                                    <div className="flex items-center justify-center h-10 w-10 rounded-full bg-slate-100 ring-2 ring-white text-xs font-bold text-slate-500">
-                                        +2k
+                                <div className="hidden sm:flex items-center gap-4">
+                                    <div className="flex -space-x-3 overflow-hidden">
+                                        {[1, 2, 3, 4].map((i) => (
+                                            <img
+                                                key={i}
+                                                className="inline-block h-10 w-10 rounded-full ring-2 ring-white"
+                                                src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${i}`}
+                                                alt="User avatar"
+                                            />
+                                        ))}
+                                        <div className="flex items-center justify-center h-10 w-10 rounded-full bg-slate-100 ring-2 ring-white text-xs font-bold text-slate-500">
+                                            +2k
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="text-sm font-medium text-slate-500">
-                                    Trusted by 2000+ happy customers
+                                    <div className="text-sm font-medium text-slate-500">
+                                        Trusted by 2000+ happy customers
+                                    </div>
                                 </div>
                             </div>
 
-                            <div className="mt-12 flex flex-wrap justify-center lg:justify-start gap-8 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+                            <div className="mt-8 sm:mt-12 flex flex-wrap justify-center lg:justify-start gap-6 sm:gap-8 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
                                 {['Google', 'Airbnb', 'Microsoft', 'Uber'].map((brand) => (
-                                    <span key={brand} className="text-2xl font-bold tracking-tighter text-slate-400">{brand}</span>
+                                    <span key={brand} className="text-lg sm:text-2xl font-bold tracking-tighter text-slate-400">{brand}</span>
                                 ))}
                             </div>
                         </div>
 
-                        <div className="flex-1 relative">
-                            <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl border-8 border-white bg-slate-900 aspect-[4/3]">
+                        <div className="flex-1 relative w-full">
+                            <div className="relative z-10 rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border-4 sm:border-8 border-white bg-slate-900 aspect-video sm:aspect-[4/3]">
                                 <div id="hero-panorama" className="w-full h-full"></div>
-                                <div className="absolute inset-0 pointer-events-none border-4 border-primary/20 animate-pulse rounded-3xl" />
+                                <div className="absolute inset-0 pointer-events-none border-2 sm:border-4 border-primary/20 animate-pulse rounded-2xl sm:rounded-3xl" />
                             </div>
-                            <div className="absolute -bottom-6 -left-6 z-20 bg-white p-6 rounded-2xl shadow-xl flex items-center gap-4 max-w-xs animate-bounce-subtle">
+                            <div className="hidden sm:flex absolute -bottom-6 -left-6 z-20 bg-white p-6 rounded-2xl shadow-xl items-center gap-4 max-w-xs animate-bounce-subtle">
                                 <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600">
                                     <CheckCircle2 className="w-6 h-6" />
                                 </div>
@@ -113,7 +115,7 @@ const Home = () => {
             </header>
 
             {/* Stats Section */}
-            <section className="bg-white dark:bg-slate-900/50 py-16 transition-colors">
+            <section className="bg-white dark:bg-slate-900/50 py-8 sm:py-12 lg:py-16 transition-colors">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                         {[
@@ -123,8 +125,8 @@ const Home = () => {
                             { label: 'Verified Reviews', value: '1800+' },
                         ].map((stat) => (
                             <div key={stat.label} className="text-center">
-                                <div className="text-4xl font-bold text-primary mb-2">{stat.value}</div>
-                                <div className="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">{stat.label}</div>
+                                <div className="text-3xl sm:text-4xl font-bold text-primary mb-2">{stat.value}</div>
+                                <div className="text-xs sm:text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">{stat.label}</div>
                             </div>
                         ))}
                     </div>
@@ -204,7 +206,7 @@ const Home = () => {
             {/* Why Choose Us */}
             <section className="py-24 bg-white dark:bg-slate-900 transition-colors">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-16 px-4">
-                    <h2 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">Why Book with Netlarx?</h2>
+                    <h2 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">Why Book with VenueVista?</h2>
                     <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">We redefine the hall booking experience with technology and premium service.</p>
                 </div>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -232,9 +234,9 @@ const Home = () => {
                     <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-8">
                         <div className="flex items-center gap-2">
                             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                                <span className="text-white font-bold text-lg">N</span>
+                                <span className="text-white font-bold text-lg">V</span>
                             </div>
-                            <span className="text-xl font-bold text-white">Netlarx</span>
+                            <span className="text-xl font-bold text-white">VenueVista</span>
                         </div>
                         <div className="flex gap-8 text-sm font-medium">
                             <Link to="/" className="hover:text-white transition-colors">Home</Link>
@@ -244,7 +246,7 @@ const Home = () => {
                         </div>
                     </div>
                     <div className="text-center text-sm border-t border-slate-800 pt-8">
-                        © 2026 Netlarx Banquet Hall Booking System. All rights reserved.
+                        © 2026 VenueVista Banquet Hall Booking System. All rights reserved.
                     </div>
                 </div>
             </footer>

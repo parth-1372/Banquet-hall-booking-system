@@ -78,9 +78,9 @@ const Halls = () => {
             <Navbar />
 
             {/* Header & Search */}
-            <div className="bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 py-8 md:py-12 transition-colors">
+            <div className="bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 py-6 sm:py-8 md:py-12 transition-colors">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white mb-6 md:mb-8">Find Your Perfect Venue</h1>
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white mb-4 sm:mb-6 md:mb-8">Find Your Perfect Venue</h1>
 
                     <div className="max-w-4xl mx-auto relative group">
                         <div className="absolute inset-0 bg-primary/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -107,18 +107,18 @@ const Halls = () => {
                                     onChange={handleFilterChange}
                                 />
                             </div>
-                            <Button onClick={fetchHalls} className="h-12 px-8">Search</Button>
+                            <Button onClick={fetchHalls} className="w-full md:w-auto h-12 px-8">Search</Button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 md:py-12">
                 <div className="flex flex-col lg:flex-row gap-8 md:gap-10">
 
                     {/* Filters Sidebar */}
-                    <aside className="lg:w-72 flex-shrink-0 space-y-6 md:space-y-8">
-                        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 transition-colors">
+                    <aside className="lg:w-72 flex-shrink-0 space-y-4 sm:space-y-6 md:space-y-8">
+                        <div className="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-2xl sm:rounded-3xl shadow-sm border border-slate-100 dark:border-slate-800 transition-colors">
                             <div className="flex items-center gap-2 font-bold text-slate-900 dark:text-white mb-6">
                                 <SlidersHorizontal className="w-5 h-5 text-primary" />
                                 <span className="uppercase tracking-[0.1em] text-xs">Refine Results</span>
@@ -179,7 +179,7 @@ const Halls = () => {
                             </div>
                         </div>
 
-                        <div className="bg-gradient-to-br from-primary/5 to-primary/10 dark:from-primary/10 dark:to-primary/5 p-8 rounded-3xl border border-primary/10 dark:border-primary/20 relative overflow-hidden group">
+                        <div className="bg-gradient-to-br from-primary/5 to-primary/10 dark:from-primary/10 dark:to-primary/5 p-5 sm:p-8 rounded-2xl sm:rounded-3xl border border-primary/10 dark:border-primary/20 relative overflow-hidden group">
                             <div className="absolute -right-4 -top-4 w-20 h-20 bg-primary/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700" />
                             <h4 className="font-black text-slate-900 dark:text-white mb-3 text-lg leading-tight">Expert Consulting</h4>
                             <p className="text-sm text-slate-600 dark:text-slate-400 mb-6 font-medium">Navigate the venue matrix with our specialists.</p>
@@ -193,7 +193,7 @@ const Halls = () => {
                     <main className="flex-1">
                         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-10">
                             <div>
-                                <h2 className="text-3xl font-black text-slate-900 dark:text-white italic">
+                                <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white italic">
                                     {loading ? 'Venue Stream' : `${halls.length} Entities`}
                                 </h2>
                                 <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-1">Found in active index</p>

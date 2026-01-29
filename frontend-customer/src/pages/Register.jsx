@@ -58,7 +58,7 @@ const Register = () => {
                     </div>
                     <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight">Create Account</h2>
                     <p className="mt-2 text-sm text-slate-600">
-                        Join Netlarx to start booking premium banquet halls.
+                        Join VenueVista to start booking premium banquet halls.
                     </p>
                 </div>
 

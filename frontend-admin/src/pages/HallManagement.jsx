@@ -182,8 +182,8 @@ const HallManagement = () => {
 
     return (
         <AdminLayout title="Hall Inventory">
-            <div className="bg-white dark:bg-slate-900 rounded-[40px] border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden transition-colors">
-                <div className="p-8 border-b border-slate-50 dark:border-slate-800 flex flex-col lg:flex-row justify-between items-center gap-6">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl sm:rounded-3xl lg:rounded-[40px] border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden transition-colors">
+                <div className="p-4 sm:p-6 lg:p-8 border-b border-slate-50 dark:border-slate-800 flex flex-col lg:flex-row justify-between items-stretch lg:items-center gap-4 sm:gap-6">
                     <div className="flex-1 w-full lg:max-w-md relative">
                         <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
                         <input
@@ -205,7 +205,8 @@ const HallManagement = () => {
                     </div>
                 </div>
 
-                <div className="overflow-x-auto">
+                {/* Desktop Table View */}
+                <div className="hidden lg:block overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                         <thead>
                             <tr className="bg-slate-50/50 dark:bg-slate-800/20">
@@ -272,11 +273,88 @@ const HallManagement = () => {
                     </table>
                 </div>
 
-                <div className="p-8 bg-slate-50 dark:bg-slate-800/30 flex justify-between items-center transition-colors">
+                {/* Mobile Card View */}
+                <div className="lg:hidden p-4 sm:p-6 space-y-4">
+                    {loading ? (
+                        <div className="text-center py-20 text-slate-400 animate-pulse">Syncing Venue Data...</div>
+                    ) : filteredHalls.length > 0 ? (
+                        filteredHalls.map((hall) => (
+                            <div key={hall.id || hall._id} className="bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-4 border border-slate-100 dark:border-slate-800 space-y-4">
+                                {/* Hall Header with Image */}
+                                <div className="flex items-start gap-4">
+                                    <div className="w-20 h-20 rounded-xl overflow-hidden bg-slate-100 dark:bg-slate-800 flex-shrink-0">
+                                        <img
+                                            src={getAssetUrl(hall.images?.[0]?.url || hall.images?.[0] || hall.primaryImage) || DEFAULT_HALL_IMAGE}
+                                            className="w-full h-full object-cover"
+                                            alt={hall.name}
+                                        />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                        <h3 className="font-bold text-slate-800 dark:text-white text-lg leading-tight mb-1">{hall.name}</h3>
+                                        <div className="flex items-center gap-1.5 text-[10px] text-slate-400 font-bold uppercase">
+                                            <MapPin className="w-3 h-3 text-admin-primary" /> {hall.location?.city}, {hall.location?.state}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Hall Stats */}
+                                <div className="grid grid-cols-2 gap-3">
+                                    <div className="bg-white dark:bg-slate-900 rounded-xl p-3 border border-slate-100 dark:border-slate-800">
+                                        <p className="text-[9px] font-black text-slate-400 uppercase tracking-wider mb-1">Capacity</p>
+                                        <div className="flex items-center gap-2 text-sky-600 dark:text-sky-400 font-black text-sm">
+                                            <Users className="w-4 h-4" /> {hall.capacity?.maximum}
+                                        </div>
+                                    </div>
+                                    <div className="bg-white dark:bg-slate-900 rounded-xl p-3 border border-slate-100 dark:border-slate-800">
+                                        <p className="text-[9px] font-black text-slate-400 uppercase tracking-wider mb-1">Price</p>
+                                        <p className="font-black text-slate-800 dark:text-slate-200 text-sm">₹{hall.pricing?.fullDay?.toLocaleString()}</p>
+                                    </div>
+                                </div>
+
+                                {/* Featured Badge */}
+                                <button
+                                    onClick={() => toggleFeatured(hall.id || hall._id, hall.isFeatured)}
+                                    className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-[10px] font-black uppercase transition-all ${hall.isFeatured
+                                        ? 'bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 border border-emerald-200 dark:border-emerald-900/50'
+                                        : 'bg-slate-100 dark:bg-slate-800 text-slate-400 border border-slate-200 dark:border-slate-700'
+                                        }`}
+                                >
+                                    {hall.isFeatured ? <CheckCircle className="w-4 h-4" /> : <XCircle className="w-4 h-4" />}
+                                    {hall.isFeatured ? 'Featured' : 'Set Featured'}
+                                </button>
+
+                                {/* Actions */}
+                                <div className="flex gap-2">
+                                    <Link
+                                        to={`/halls/${hall.id || hall._id}`}
+                                        className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-600 dark:text-slate-400 hover:text-admin-primary hover:border-admin-primary transition-all"
+                                    >
+                                        <Eye className="w-4 h-4" /> View
+                                    </Link>
+                                    <button
+                                        onClick={() => handleEdit(hall)}
+                                        className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-admin-primary text-white rounded-xl hover:bg-admin-primary/90 transition-all"
+                                    >
+                                        <Edit2 className="w-4 h-4" /> Edit
+                                    </button>
+                                    <button className="px-4 py-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/50 rounded-xl text-red-500 hover:bg-red-100 dark:hover:bg-red-900/30 transition-all">
+                                        <Trash2 className="w-4 h-4" />
+                                    </button>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="text-center py-16 text-slate-400 dark:text-slate-500 font-medium italic">
+                            Your venue search query returned no active entities.
+                        </div>
+                    )}
+                </div>
+
+                <div className="p-4 sm:p-6 lg:p-8 bg-slate-50 dark:bg-slate-800/30 flex flex-col sm:flex-row justify-between items-center gap-4 transition-colors">
                     <p className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest">Page View Metrics: {filteredHalls.length} Result Paths</p>
-                    <div className="flex gap-2">
-                        <button className="px-5 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-[10px] font-black uppercase text-slate-400 dark:text-slate-600 cursor-not-allowed shadow-sm">Back</button>
-                        <button className="px-5 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-[10px] font-black uppercase text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all shadow-sm">Next Flow</button>
+                    <div className="flex gap-2 w-full sm:w-auto">
+                        <button className="flex-1 sm:flex-none px-5 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-[10px] font-black uppercase text-slate-400 dark:text-slate-600 cursor-not-allowed shadow-sm">Back</button>
+                        <button className="flex-1 sm:flex-none px-5 py-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-[10px] font-black uppercase text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all shadow-sm">Next Flow</button>
                     </div>
                 </div>
             </div>

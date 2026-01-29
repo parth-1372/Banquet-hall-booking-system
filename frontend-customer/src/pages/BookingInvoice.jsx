@@ -98,8 +98,8 @@ This is a digitally generated credential.
                 <div className="bg-slate-900 p-12 text-white flex justify-between items-start">
                     <div>
                         <div className="flex items-center gap-3 mb-6">
-                            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center font-black text-xl italic">N</div>
-                            <span className="text-2xl font-black uppercase tracking-tighter italic">Netlarx <span className="text-primary italic">Hackthon</span></span>
+                            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center font-black text-xl italic">V</div>
+                            <span className="text-2xl font-black uppercase tracking-tighter italic">VenueVista <span className="text-primary italic">Bookings</span></span>
                         </div>
                         <h1 className="text-4xl font-black uppercase tracking-tight mb-2">Invoice</h1>
                         <p className="text-slate-400 font-medium">Invoice ID: {booking.bookingId}</p>

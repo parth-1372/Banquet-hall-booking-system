@@ -28,9 +28,9 @@ const Contact = () => {
         <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300 pb-20">
             <Navbar />
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 lg:py-24">
                 <div className="text-center mb-16">
-                    <h1 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white mb-6">Connect with Our Experts</h1>
+                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 dark:text-white mb-6">Connect with Our Experts</h1>
                     <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto font-medium">
                         Whether you're planning a grand wedding or a corporate gala,
                         our team is here to ensure every detail of your venue is perfect.

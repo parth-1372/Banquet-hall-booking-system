@@ -59,7 +59,7 @@ const UserManagement = () => {
 
     return (
         <AdminLayout title="User Accounts">
-            <div className="mb-8 flex flex-col md:flex-row gap-4 justify-between items-center bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-100 dark:border-slate-800 transition-colors">
+            <div className="mb-6 sm:mb-8 flex flex-col md:flex-row gap-4 justify-between items-stretch md:items-center bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-slate-100 dark:border-slate-800 transition-colors">
                 <div className="relative w-full md:w-96">
                     <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
                     <input
@@ -88,8 +88,9 @@ const UserManagement = () => {
                 </div>
             </div>
 
-            <div className="bg-white dark:bg-slate-900 rounded-[40px] border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden transition-colors">
-                <div className="overflow-x-auto">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl sm:rounded-3xl lg:rounded-[40px] border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden transition-colors">
+                {/* Desktop Table View */}
+                <div className="hidden lg:block overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                         <thead>
                             <tr className="bg-slate-50 dark:bg-slate-800/50">
@@ -172,6 +173,91 @@ const UserManagement = () => {
                             )}
                         </tbody>
                     </table>
+                </div>
+
+                {/* Mobile Card View */}
+                <div className="lg:hidden p-4 sm:p-6 space-y-4">
+                    {loading ? (
+                        <div className="text-center py-20 text-slate-400 animate-pulse">Loading Identity Matrix...</div>
+                    ) : filteredUsers.length > 0 ? (
+                        filteredUsers.map((user) => (
+                            <div key={user.id} className="bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-4 border border-slate-100 dark:border-slate-800 space-y-4">
+                                {/* User Header */}
+                                <div className="flex items-center gap-4">
+                                    <div className="w-14 h-14 bg-slate-100 dark:bg-slate-800 rounded-2xl flex items-center justify-center text-slate-500 dark:text-slate-400 font-black text-xl border border-slate-200 dark:border-slate-700 flex-shrink-0">
+                                        {user.name?.[0]}
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                        <h4 className="font-bold text-slate-800 dark:text-white capitalize truncate">{user.name}</h4>
+                                        <p className="text-xs text-slate-400">Joined {new Date(user.createdAt).toLocaleDateString()}</p>
+                                    </div>
+                                    <button
+                                        onClick={() => toggleStatus(user.id, user.isActive)}
+                                        className={`flex-shrink-0 p-2 rounded-xl transition-all ${user.isActive
+                                                ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20'
+                                                : 'text-slate-400 bg-slate-100 dark:bg-slate-800'
+                                            }`}
+                                    >
+                                        {user.isActive ? <ToggleRight className="w-7 h-7" /> : <ToggleLeft className="w-7 h-7" />}
+                                    </button>
+                                </div>
+
+                                {/* Contact Info */}
+                                <div className="bg-white dark:bg-slate-900 rounded-xl p-3 border border-slate-100 dark:border-slate-800 space-y-2">
+                                    <div className="flex items-center gap-2 text-sm">
+                                        <Mail className="w-4 h-4 text-admin-primary" />
+                                        <span className="text-slate-600 dark:text-slate-400 truncate">{user.email}</span>
+                                    </div>
+                                    {user.phone && (
+                                        <div className="flex items-center gap-2 text-sm">
+                                            <Users className="w-4 h-4 text-admin-primary" />
+                                            <span className="text-slate-600 dark:text-slate-400">{user.phone}</span>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Role Selection */}
+                                <div>
+                                    <label className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 block">Privileges</label>
+                                    <select
+                                        value={user.role}
+                                        onChange={(e) => handleRoleUpdate(user.id, e.target.value)}
+                                        disabled={currentUser?.role === 'admin1'}
+                                        className={`w-full px-4 py-3 rounded-xl text-xs font-black uppercase border outline-none ${user.role === 'customer'
+                                                ? 'text-sky-700 border-sky-200 bg-sky-50 dark:text-sky-500 dark:border-sky-900/50 dark:bg-sky-900/10'
+                                                : 'text-indigo-700 border-indigo-200 bg-indigo-50 dark:text-indigo-400 dark:border-indigo-900/50 dark:bg-indigo-900/10'
+                                            }`}
+                                    >
+                                        <option value="customer">Customer</option>
+                                        {(currentUser?.role === 'super_admin' || currentUser?.role === 'admin2') && (
+                                            <option value="admin1">Admin 1</option>
+                                        )}
+                                        {currentUser?.role === 'super_admin' && (
+                                            <>
+                                                <option value="admin2">Admin 2</option>
+                                                <option value="super_admin">Admin 3 (Super)</option>
+                                            </>
+                                        )}
+                                    </select>
+                                </div>
+
+                                {/* Status Badge */}
+                                <div className="flex items-center justify-between">
+                                    <span className="text-xs font-bold text-slate-400 uppercase">Status</span>
+                                    <span className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase ${user.isActive
+                                            ? 'bg-emerald-50 text-emerald-600 border border-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-900/50'
+                                            : 'bg-slate-100 text-slate-500 border border-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700'
+                                        }`}>
+                                        {user.isActive ? 'Active' : 'Inactive'}
+                                    </span>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="text-center py-16 text-slate-400 font-medium italic">
+                            Zero results found for current identity query.
+                        </div>
+                    )}
                 </div>
             </div>
         </AdminLayout>

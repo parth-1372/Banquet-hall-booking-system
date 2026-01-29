@@ -29,7 +29,7 @@ const MyBookings = () => {
                 key: RAZORPAY_KEY_ID,
                 amount: order.amount,
                 currency: order.currency,
-                name: "Netlarx Premium",
+                name: "VenueVista",
                 description: `Payment for ${booking.halls?.[0]?.name || 'Booking'}`,
                 order_id: order.id,
                 handler: async function (response) {
@@ -125,14 +125,14 @@ const MyBookings = () => {
         <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
             <Navbar />
 
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 lg:py-24">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-12">
                     <div>
-                        <h1 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white leading-tight mb-2">Event <span className="text-primary italic">Trajectory</span></h1>
+                        <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 dark:text-white leading-tight mb-2">Event <span className="text-primary italic">Trajectory</span></h1>
                         <p className="text-slate-500 dark:text-slate-400 font-medium">Tracking your premium venue connections and lifecycle.</p>
                     </div>
-                    <Link to="/halls">
-                        <Button className="h-14 px-8 shadow-2xl shadow-primary/20 hover:scale-105 active:scale-95 transition-transform">Initialize New Booking</Button>
+                    <Link to="/halls" className="w-full md:w-auto">
+                        <Button className="w-full md:w-auto h-12 sm:h-14 px-6 sm:px-8 shadow-2xl shadow-primary/20 hover:scale-105 active:scale-95 transition-transform">Initialize New Booking</Button>
                     </Link>
                 </div>
 

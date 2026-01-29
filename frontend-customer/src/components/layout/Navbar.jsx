@@ -24,10 +24,10 @@ const Navbar = () => {
                     {/* Logo */}
                     <Link to="/" className="flex items-center gap-2">
                         <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
-                            <span className="text-white font-bold text-xl">N</span>
+                            <span className="text-white font-bold text-xl">V</span>
                         </div>
                         <span className="text-2xl font-bold bg-gradient-to-r from-primary to-primary-700 bg-clip-text text-transparent hidden sm:block">
-                            Netlarx
+                            VenueVista
                         </span>
                     </Link>
 

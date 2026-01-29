@@ -154,7 +154,7 @@ const BookingManagement = () => {
 
     return (
         <AdminLayout title="Booking Management">
-            <div className="mb-8 flex flex-wrap gap-4 justify-between items-center bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-100 dark:border-slate-800 transition-colors">
+            <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row flex-wrap gap-4 justify-between items-stretch sm:items-center bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-slate-100 dark:border-slate-800 transition-colors">
                 <div className="flex flex-wrap gap-4">
                     <div className="relative">
                         <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
@@ -182,13 +182,14 @@ const BookingManagement = () => {
                         />
                     </div>
                 </div>
-                <AdminButton variant="secondary" onClick={handleExport}>
+                <AdminButton variant="secondary" onClick={handleExport} className="w-full sm:w-auto">
                     <Download className="w-4 h-4" /> Export Report (PDF)
                 </AdminButton>
             </div>
 
-            <div className="bg-white dark:bg-slate-900 rounded-[40px] border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden transition-colors">
-                <div className="overflow-x-auto">
+            <div className="bg-white dark:bg-slate-900 rounded-2xl sm:rounded-3xl lg:rounded-[40px] border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden transition-colors">
+                {/* Desktop Table View */}
+                <div className="hidden lg:block overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                         <thead>
                             <tr className="bg-slate-50 dark:bg-slate-800/50">
@@ -249,6 +250,66 @@ const BookingManagement = () => {
                             )}
                         </tbody>
                     </table>
+                </div>
+
+                {/* Mobile Card View */}
+                <div className="lg:hidden p-4 sm:p-6 space-y-4">
+                    {loading ? (
+                        <div className="text-center py-20 text-slate-400 animate-pulse">Loading bookings...</div>
+                    ) : bookings.length > 0 ? (
+                        bookings.map((booking) => (
+                            <div key={booking.id || booking._id} className="bg-slate-50 dark:bg-slate-800/50 rounded-2xl p-4 border border-slate-100 dark:border-slate-800 space-y-3">
+                                {/* Customer Info */}
+                                <div className="flex items-start justify-between gap-3">
+                                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                                        <div className="w-10 h-10 rounded-full bg-admin-primary/10 flex items-center justify-center flex-shrink-0">
+                                            <User className="w-5 h-5 text-admin-primary" />
+                                        </div>
+                                        <div className="min-w-0">
+                                            <h4 className="font-bold text-slate-800 dark:text-white truncate">{booking.user?.name || 'Guest'}</h4>
+                                            <p className="text-xs text-slate-400">{booking.user?.email}</p>
+                                        </div>
+                                    </div>
+                                    <span className={`px-3 py-1.5 rounded-xl text-[9px] font-black uppercase border ${statusStyles[booking.status] || statusStyles['action-pending']}`}>
+                                        {booking.status.replace(/-/g, ' ')}
+                                    </span>
+                                </div>
+
+                                {/* Venue Info */}
+                                <div className="bg-white dark:bg-slate-900 rounded-xl p-3 border border-slate-100 dark:border-slate-800">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <MapPin className="w-4 h-4 text-admin-primary" />
+                                        <h5 className="font-bold text-sm text-slate-800 dark:text-white">{booking.hall?.name || 'Venue'}</h5>
+                                    </div>
+                                    <div className="text-xs text-slate-500 dark:text-slate-400 space-y-1">
+                                        <div className="flex items-center gap-2">
+                                            <Calendar className="w-3 h-3" />
+                                            <span>{new Date(booking.eventDate).toLocaleDateString()}</span>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <Clock className="w-3 h-3" />
+                                            <span>{booking.slot?.name || booking.timeSlot}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Price */}
+                                <div className="flex items-center justify-between bg-white dark:bg-slate-900 rounded-xl p-3 border border-slate-100 dark:border-slate-800">
+                                    <span className="text-xs font-bold text-slate-400 uppercase">Total Amount</span>
+                                    <span className="text-lg font-black text-slate-800 dark:text-white">₹{booking.totalAmount?.toLocaleString()}</span>
+                                </div>
+
+                                {/* Actions */}
+                                <div className="pt-2">
+                                    {getActions(booking)}
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="text-center py-16 text-slate-400 dark:text-slate-500 italic">
+                            No bookings found matching your filters.
+                        </div>
+                    )}
                 </div>
             </div>
         </AdminLayout>

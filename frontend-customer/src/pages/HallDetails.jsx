@@ -157,25 +157,25 @@ const HallDetails = () => {
             <Navbar />
 
             {/* Top Banner / Actions */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex items-center justify-between">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 flex items-center justify-between">
                 <button onClick={() => navigate(-1)} className="flex items-center gap-2 font-bold text-slate-600 dark:text-slate-400 hover:text-primary transition-colors">
-                    <ChevronLeft className="w-5 h-5" /> Back
+                    <ChevronLeft className="w-5 h-5" /> <span className="hidden sm:inline">Back</span>
                 </button>
-                <div className="flex gap-4">
+                <div className="flex gap-2 sm:gap-4">
                     <button className="p-2 bg-white dark:bg-slate-900 rounded-full border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-sm"><Share2 className="w-5 h-5 text-slate-600 dark:text-slate-400" /></button>
                     <button className="p-2 bg-white dark:bg-slate-900 rounded-full border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-sm text-slate-600 dark:text-slate-400 hover:text-red-500"><Heart className="w-5 h-5" /></button>
                 </div>
             </div>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-10 lg:gap-12">
 
                     {/* Main Content */}
-                    <div className="lg:col-span-2 space-y-12">
+                    <div className="lg:col-span-2 space-y-6 sm:space-y-8 lg:space-y-12">
 
                         {/* Gallery / 360 View */}
                         <div className="space-y-4">
-                            <div className="relative rounded-[3rem] overflow-hidden shadow-2xl group border-8 border-white dark:border-slate-900 bg-slate-200 dark:bg-slate-800 aspect-video">
+                            <div className="relative rounded-2xl sm:rounded-3xl lg:rounded-[3rem] overflow-hidden shadow-2xl group border-4 sm:border-6 lg:border-8 border-white dark:border-slate-900 bg-slate-200 dark:bg-slate-800 aspect-video">
                                 {viewMode === 'photo' ? (
                                     <img
                                         src={getAssetUrl(activeImage) || DEFAULT_HALL_IMAGE}
@@ -188,16 +188,16 @@ const HallDetails = () => {
                                         <div className="absolute inset-0 pointer-events-none border-4 border-primary/20 animate-pulse" />
                                     </div>
                                 )}
-                                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 bg-black/20 backdrop-blur-xl p-2 rounded-[2rem] border border-white/10">
+                                <div className="absolute bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 flex gap-2 bg-black/20 backdrop-blur-xl p-1.5 sm:p-2 rounded-2xl sm:rounded-[2rem] border border-white/10 scale-90 sm:scale-100">
                                     <button
                                         onClick={() => setViewMode('photo')}
-                                        className={`px-6 py-3 rounded-2xl text-xs font-black uppercase tracking-widest flex items-center gap-2 transition-all ${viewMode === 'photo' ? 'bg-white text-primary shadow-xl' : 'text-white hover:bg-white/10'}`}
+                                        className={`px-4 sm:px-6 py-2 sm:py-3 rounded-xl sm:rounded-2xl text-[10px] sm:text-xs font-black uppercase tracking-widest flex items-center gap-1.5 sm:gap-2 transition-all ${viewMode === 'photo' ? 'bg-white text-primary shadow-xl' : 'text-white hover:bg-white/10'}`}
                                     >
-                                        <ImageIcon className="w-4 h-4" /> Gallery
+                                        <ImageIcon className="w-3 h-3 sm:w-4 sm:h-4" /> <span className="hidden sm:inline">Gallery</span>
                                     </button>
                                     <button
                                         onClick={() => setViewMode('360')}
-                                        className={`px-6 py-3 rounded-2xl text-xs font-black uppercase tracking-widest flex items-center gap-2 transition-all ${viewMode === '360' ? 'bg-white text-primary shadow-xl' : 'text-white hover:bg-white/10'}`}
+                                        className={`px-4 sm:px-6 py-2 sm:py-3 rounded-xl sm:rounded-2xl text-[10px] sm:text-xs font-black uppercase tracking-widest flex items-center gap-1.5 sm:gap-2 transition-all ${viewMode === '360' ? 'bg-white text-primary shadow-xl' : 'text-white hover:bg-white/10'}`}
                                     >
                                         <Clock className={`w-4 h-4 ${viewMode === '360' ? 'animate-spin-slow' : ''}`} /> 360* Virtual
                                     </button>
