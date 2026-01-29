@@ -93,9 +93,9 @@ const Navbar = () => {
                     <div className="md:hidden">
                         <button
                             onClick={() => setIsOpen(!isOpen)}
-                            className="p-2 rounded-lg text-slate-600 hover:bg-slate-50 transition-all"
+                            className="p-2.5 rounded-xl text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all border border-slate-100 dark:border-slate-700"
                         >
-                            {isOpen ? <X /> : <Menu />}
+                            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                         </button>
                     </div>
                 </div>
@@ -103,7 +103,7 @@ const Navbar = () => {
 
             {/* Mobile Menu */}
             {isOpen && (
-                <div className="md:hidden absolute top-20 left-0 w-full bg-white border-b border-slate-100 p-4 animate-in slide-in-from-top duration-300">
+                <div className="md:hidden absolute top-20 left-0 w-full bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 p-6 animate-in slide-in-from-top duration-300 shadow-2xl z-[60] transition-colors">
                     <div className="flex flex-col gap-4">
                         {navLinks.map((link) => (
                             (!link.protected || user) && (
@@ -111,27 +111,40 @@ const Navbar = () => {
                                     key={link.path}
                                     to={link.path}
                                     onClick={() => setIsOpen(false)}
-                                    className="flex items-center gap-2 text-lg font-medium text-slate-600 px-4 py-2 hover:bg-slate-50 rounded-lg"
+                                    className="flex items-center gap-4 text-lg font-bold text-slate-700 dark:text-slate-200 px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-2xl transition-all border border-transparent hover:border-slate-100 dark:hover:border-slate-700"
                                 >
-                                    <link.icon className="w-5 h-5" />
+                                    <div className="w-11 h-11 bg-slate-50 dark:bg-slate-800 rounded-xl flex items-center justify-center border border-slate-100 dark:border-slate-700 group-hover:scale-110 transition-transform">
+                                        <link.icon className="w-5 h-5 text-primary" />
+                                    </div>
                                     {link.name}
                                 </Link>
                             )
                         ))}
-                        <div className="h-[1px] bg-slate-100 my-2" />
+                        <div className="h-[1px] bg-slate-100 dark:bg-slate-800 my-2" />
                         {user ? (
-                            <Button onClick={() => { logout(); setIsOpen(false); }} variant="secondary">
-                                Logout
-                            </Button>
+                            <div className="flex flex-col gap-3">
+                                <div className="flex items-center gap-3 px-4 py-2">
+                                    <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                                        <User className="w-5 h-5 text-primary" />
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-sm font-bold dark:text-white capitalize">{user.name}</span>
+                                        <span className="text-[10px] text-slate-400 font-medium">{user.email}</span>
+                                    </div>
+                                </div>
+                                <Button onClick={() => { logout(); setIsOpen(false); }} variant="secondary" className="w-full h-14 rounded-2xl border-red-100 dark:border-red-900/30 text-red-500">
+                                    <LogOut className="w-5 h-5 mr-3" /> Logout Access
+                                </Button>
+                            </div>
                         ) : (
-                            <>
+                            <div className="flex flex-col gap-3 pt-2">
                                 <Link to="/login" onClick={() => setIsOpen(false)}>
-                                    <Button variant="secondary" className="w-full">Sign In</Button>
+                                    <Button variant="ghost" className="w-full h-14 rounded-2xl">Sign In</Button>
                                 </Link>
                                 <Link to="/register" onClick={() => setIsOpen(false)}>
-                                    <Button className="w-full">Get Started</Button>
+                                    <Button className="w-full h-14 rounded-2xl shadow-xl shadow-primary/20">Get Started</Button>
                                 </Link>
-                            </>
+                            </div>
                         )}
                     </div>
                 </div>

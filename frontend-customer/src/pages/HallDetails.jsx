@@ -10,7 +10,7 @@ import {
     Clock, CreditCard, ChevronLeft, Image as ImageIcon, Share2, Heart
 } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { DEFAULT_HALL_IMAGE, DEFAULT_360_IMAGE } from '../utils/assetUrl';
+import { DEFAULT_HALL_IMAGE, DEFAULT_360_IMAGE, getAssetUrl } from '../utils/assetUrl';
 
 const HallDetails = () => {
     const { id } = useParams();
@@ -20,6 +20,7 @@ const HallDetails = () => {
     const [loading, setLoading] = useState(true);
     const [reviews, setReviews] = useState([]);
     const [viewMode, setViewMode] = useState('photo'); // 'photo' or '360'
+    const [activeImage, setActiveImage] = useState('');
 
     // Booking state
     const [bookingDate, setBookingDate] = useState(new Date().toISOString().split('T')[0]);
@@ -36,8 +37,15 @@ const HallDetails = () => {
                     api.get(`/halls/${id}`),
                     api.get(`/halls/${id}/reviews`)
                 ]);
-                setHall(hallRes.data.data.hall);
+                const hallData = hallRes.data.data.hall;
+                setHall(hallData);
                 setReviews(reviewsRes.data.data.reviews || []);
+                if (hallData.images && hallData.images.length > 0) {
+                    const primary = hallData.images.find(img => img.isPrimary);
+                    setActiveImage(primary ? primary.url : hallData.images[0].url);
+                } else {
+                    setActiveImage(hallData.primaryImage || '');
+                }
             } catch (err) {
                 toast.error('Could not load hall details');
                 navigate('/halls');
@@ -67,7 +75,7 @@ const HallDetails = () => {
 
                     viewerRef.current = window.pannellum.viewer('panorama', {
                         "type": "equirectangular",
-                        "panorama": hall.rotationViewUrl || DEFAULT_360_IMAGE,
+                        "panorama": getAssetUrl(hall.rotationViewUrl) || DEFAULT_360_IMAGE,
                         "autoLoad": true,
                         "autoRotate": -2,
                         "hfov": 110,
@@ -165,33 +173,51 @@ const HallDetails = () => {
                     <div className="lg:col-span-2 space-y-12">
 
                         {/* Gallery / 360 View */}
-                        <div className="relative rounded-3xl overflow-hidden shadow-2xl group border-8 border-white dark:border-slate-900 bg-slate-200 dark:bg-slate-800 aspect-video">
-                            {viewMode === 'photo' ? (
-                                <img
-                                    src={hall.primaryImage || DEFAULT_HALL_IMAGE}
-                                    alt={hall.name}
-                                    className="w-full h-full object-cover"
-                                />
-                            ) : (
-                                <div className="w-full h-full relative bg-slate-900 overflow-hidden">
-                                    <div id="panorama" style={{ width: '100%', height: '100%' }}></div>
-                                    <div className="absolute inset-0 pointer-events-none border-4 border-primary/20 animate-pulse" />
+                        <div className="space-y-4">
+                            <div className="relative rounded-[3rem] overflow-hidden shadow-2xl group border-8 border-white dark:border-slate-900 bg-slate-200 dark:bg-slate-800 aspect-video">
+                                {viewMode === 'photo' ? (
+                                    <img
+                                        src={getAssetUrl(activeImage) || DEFAULT_HALL_IMAGE}
+                                        alt={hall.name}
+                                        className="w-full h-full object-cover"
+                                    />
+                                ) : (
+                                    <div className="w-full h-full relative bg-slate-900 overflow-hidden">
+                                        <div id="panorama" style={{ width: '100%', height: '100%' }}></div>
+                                        <div className="absolute inset-0 pointer-events-none border-4 border-primary/20 animate-pulse" />
+                                    </div>
+                                )}
+                                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 bg-black/20 backdrop-blur-xl p-2 rounded-[2rem] border border-white/10">
+                                    <button
+                                        onClick={() => setViewMode('photo')}
+                                        className={`px-6 py-3 rounded-2xl text-xs font-black uppercase tracking-widest flex items-center gap-2 transition-all ${viewMode === 'photo' ? 'bg-white text-primary shadow-xl' : 'text-white hover:bg-white/10'}`}
+                                    >
+                                        <ImageIcon className="w-4 h-4" /> Gallery
+                                    </button>
+                                    <button
+                                        onClick={() => setViewMode('360')}
+                                        className={`px-6 py-3 rounded-2xl text-xs font-black uppercase tracking-widest flex items-center gap-2 transition-all ${viewMode === '360' ? 'bg-white text-primary shadow-xl' : 'text-white hover:bg-white/10'}`}
+                                    >
+                                        <Clock className={`w-4 h-4 ${viewMode === '360' ? 'animate-spin-slow' : ''}`} /> 360* Virtual
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Multi-Image Strip */}
+                            {hall.images && hall.images.length > 0 && (
+                                <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-slate-200 dark:scrollbar-thumb-slate-800">
+                                    {hall.images.map((img, idx) => (
+                                        <button
+                                            key={idx}
+                                            onClick={() => { setActiveImage(img.url || img); setViewMode('photo'); }}
+                                            className={`w-32 h-24 rounded-3xl overflow-hidden border-4 transition-all flex-shrink-0 relative group shadow-sm ${activeImage === (img.url || img) ? 'border-primary scale-105 shadow-primary/20' : 'border-transparent opacity-70 hover:opacity-100 hover:scale-105'}`}
+                                        >
+                                            <img src={getAssetUrl(img.url || img)} className="w-full h-full object-cover" />
+                                            <div className={`absolute inset-0 bg-primary/20 transition-opacity ${activeImage === (img.url || img) ? 'opacity-0' : 'opacity-0 group-hover:opacity-10'}`} />
+                                        </button>
+                                    ))}
                                 </div>
                             )}
-                            <div className="absolute bottom-6 left-6 flex gap-2">
-                                <button
-                                    onClick={() => setViewMode('photo')}
-                                    className={`px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-all z-10 ${viewMode === 'photo' ? 'bg-primary text-white' : 'bg-black/60 text-white backdrop-blur hover:bg-black/80'}`}
-                                >
-                                    <ImageIcon className="w-4 h-4" /> Photos
-                                </button>
-                                <button
-                                    onClick={() => setViewMode('360')}
-                                    className={`px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-all z-10 ${viewMode === '360' ? 'bg-primary text-white font-black scale-105' : 'bg-black/60 text-white backdrop-blur hover:bg-black/80'}`}
-                                >
-                                    <Clock className="w-4 h-4 animate-spin-slow" /> 360* Virtual Tour
-                                </button>
-                            </div>
                         </div>
 
                         {/* Title & Info */}

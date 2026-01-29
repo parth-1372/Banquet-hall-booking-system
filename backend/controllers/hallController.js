@@ -297,6 +297,55 @@ const getAllHallsAdmin = asyncHandler(async (req, res, next) => {
     });
 });
 
+/**
+ * @desc    Upload multiple images for a hall
+ * @route   POST /api/v1/halls/:id/images
+ * @access  Private (Admin only)
+ */
+const uploadHallImages = asyncHandler(async (req, res, next) => {
+    const hall = await Hall.findById(req.params.id);
+    if (!hall) return next(new AppError('Hall not found', 404));
+
+    if (!req.files || req.files.length === 0) {
+        return next(new AppError('Please upload at least one image', 400));
+    }
+
+    const imageUrls = req.files.map(file => `/uploads/${file.filename}`);
+
+    // Add new images to the existing gallery
+    const newImages = imageUrls.map(url => ({ url, isPrimary: false }));
+    hall.images.push(...newImages);
+
+    await hall.save();
+
+    res.status(200).json({
+        status: 'success',
+        message: 'Images uploaded successfully',
+        data: { images: hall.images }
+    });
+});
+
+/**
+ * @desc    Upload 360 image for a hall
+ * @route   POST /api/v1/halls/:id/360-image
+ * @access  Private (Admin only)
+ */
+const uploadHall360Image = asyncHandler(async (req, res, next) => {
+    const hall = await Hall.findById(req.params.id);
+    if (!hall) return next(new AppError('Hall not found', 404));
+
+    if (!req.file) return next(new AppError('Please upload a 360 image', 400));
+
+    hall.rotationViewUrl = `/uploads/${req.file.filename}`;
+    await hall.save();
+
+    res.status(200).json({
+        status: 'success',
+        message: '360 Image uploaded successfully',
+        data: { rotationViewUrl: hall.rotationViewUrl }
+    });
+});
+
 module.exports = {
     createHall,
     getAllHalls,
@@ -307,4 +356,6 @@ module.exports = {
     toggleFeatured,
     getHallAvailability,
     getAllHallsAdmin,
+    uploadHallImages,
+    uploadHall360Image,
 };

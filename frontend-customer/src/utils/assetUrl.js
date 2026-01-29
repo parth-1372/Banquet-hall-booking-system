@@ -14,3 +14,6 @@ export const getAssetUrl = (path) => {
 // Default placeholder images
 export const DEFAULT_HALL_IMAGE = `${BACKEND_URL}/uploads/hall_main.png`;
 export const DEFAULT_360_IMAGE = `${BACKEND_URL}/uploads/hall_360.png`;
+
+// Razorpay Configuration
+export const RAZORPAY_KEY_ID = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_SSuX8V53G6Sf0i';

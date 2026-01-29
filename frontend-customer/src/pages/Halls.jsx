@@ -5,7 +5,7 @@ import { Search, MapPin, Users, Star, SlidersHorizontal, ArrowRight, Calendar } 
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/ui/Button';
 import toast from 'react-hot-toast';
-import { DEFAULT_HALL_IMAGE } from '../utils/assetUrl';
+import { DEFAULT_HALL_IMAGE, getAssetUrl } from '../utils/assetUrl';
 
 const Halls = () => {
     const [halls, setHalls] = useState([]);
@@ -84,7 +84,7 @@ const Halls = () => {
 
                     <div className="max-w-4xl mx-auto relative group">
                         <div className="absolute inset-0 bg-primary/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                        <div className="relative bg-white dark:bg-slate-800 p-2 rounded-2xl shadow-xl flex flex-col md:row gap-2 border border-slate-100 dark:border-slate-700">
+                        <div className="relative bg-white dark:bg-slate-800 p-2 rounded-2xl shadow-xl flex flex-col md:flex-row gap-2 border border-slate-100 dark:border-slate-700">
                             <div className="flex-1 flex items-center gap-2 px-4 py-2 border-b md:border-b-0 md:border-r border-slate-100 dark:border-slate-700">
                                 <Search className="w-5 h-5 text-slate-400" />
                                 <input
@@ -260,7 +260,7 @@ const Halls = () => {
                                         >
                                             <div className="relative h-52 sm:h-56 flex-shrink-0">
                                                 <img
-                                                    src={hall.primaryImage || DEFAULT_HALL_IMAGE}
+                                                    src={getAssetUrl(hall.primaryImage) || DEFAULT_HALL_IMAGE}
                                                     alt={hall.name}
                                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                                 />

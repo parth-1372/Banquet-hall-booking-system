@@ -30,6 +30,8 @@ const HallManagement = () => {
     const [editId, setEditId] = useState(null);
     const [saving, setSaving] = useState(false);
     const [errors, setErrors] = useState({});
+    const [selectedFiles, setSelectedFiles] = useState(null);
+    const [selected360File, setSelected360File] = useState(null);
 
     const fetchHalls = async () => {
         try {
@@ -131,16 +133,39 @@ const HallManagement = () => {
                 isFeatured: false
             };
 
+            let finalId = editId;
             if (editId) {
                 await api.patch(`/halls/${editId}`, payload);
-                toast.success('Venue updated successfully!');
+                toast.success('Venue metadata updated!');
             } else {
-                await api.post('/halls', payload);
-                toast.success('Venue added successfully!');
+                const { data } = await api.post('/halls', payload);
+                finalId = data.data.hall._id;
+                toast.success('Venue profile created!');
+            }
+
+            // Phase 2: Handle file uploads if any
+            if (selectedFiles || selected360File) {
+                toast.loading('Uploading media...', { id: 'uploading' });
+
+                if (selectedFiles) {
+                    const fileData = new FormData();
+                    Array.from(selectedFiles).forEach(file => fileData.append('images', file));
+                    await api.post(`/halls/${finalId}/images`, fileData);
+                }
+
+                if (selected360File) {
+                    const fileData360 = new FormData();
+                    fileData360.append('panorama', selected360File);
+                    await api.post(`/halls/${finalId}/360-image`, fileData360);
+                }
+
+                toast.success('Media uploaded successfully!', { id: 'uploading' });
             }
 
             setShowModal(false);
             setEditId(null);
+            setSelectedFiles(null);
+            setSelected360File(null);
             setFormData({ name: '', description: '', type: 'banquet', city: '', state: '', address: '', maxCapacity: '', fullDayPrice: '', images: '', rotationViewUrl: '' });
             fetchHalls();
         } catch (err) {
@@ -326,12 +351,31 @@ const HallManagement = () => {
                                             className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl py-4 px-6 text-slate-700 dark:text-white outline-none focus:ring-2 focus:ring-admin-primary/20" />
                                     </div>
                                     <div className="space-y-1">
+                                        <p className="text-[9px] text-slate-500 font-bold uppercase ml-2">OR Upload Local Images (Up to 5)</p>
+                                        <input
+                                            type="file"
+                                            multiple
+                                            accept="image/*"
+                                            onChange={(e) => setSelectedFiles(e.target.files)}
+                                            className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl py-4 px-6 text-slate-700 dark:text-white outline-none focus:ring-2 focus:ring-admin-primary/20"
+                                        />
+                                    </div>
+                                    <div className="space-y-1">
                                         <p className="text-[9px] text-slate-500 font-bold uppercase ml-2">360° Panorama View URL (Pannellum format)</p>
                                         <input name="rotationViewUrl" value={formData.rotationViewUrl} onChange={handleInputChange} type="text" placeholder="https://example.com/panorama.jpg"
                                             className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl py-4 px-6 text-slate-700 dark:text-white outline-none focus:ring-2 focus:ring-admin-primary/20" />
                                     </div>
+                                    <div className="space-y-1">
+                                        <p className="text-[9px] text-slate-500 font-bold uppercase ml-2">OR Upload 360° Image</p>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={(e) => setSelected360File(e.target.files[0])}
+                                            className="w-full bg-slate-50 dark:bg-slate-800 border-none rounded-2xl py-4 px-6 text-slate-700 dark:text-white outline-none focus:ring-2 focus:ring-admin-primary/20"
+                                        />
+                                    </div>
                                 </div>
-                                <p className="text-[10px] text-slate-400 ml-2">Empty fields will use standard Netlarx premium defaults.</p>
+                                <p className="text-[10px] text-slate-400 ml-2 italic">Note: Local uploads will be stored on this server and takes precedence over URL links.</p>
                             </div>
                             <div className="flex gap-4 pt-4">
                                 <AdminButton type="submit" disabled={saving} className="flex-1 h-14">

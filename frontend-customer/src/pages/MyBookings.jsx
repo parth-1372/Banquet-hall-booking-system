@@ -5,12 +5,68 @@ import { Calendar, MapPin, Clock, CreditCard, ChevronRight, CheckCircle, Clock3,
 import Button from '../components/ui/Button';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
+import { RAZORPAY_KEY_ID } from '../utils/assetUrl';
 
 const MyBookings = () => {
     const navigate = useNavigate();
     const [bookings, setBookings] = useState([]);
     const [loading, setLoading] = useState(true);
     const [activeStatus, setActiveStatus] = useState('all');
+    const [processingPayment, setProcessingPayment] = useState(null);
+
+    const handlePayment = async (booking) => {
+        setProcessingPayment(booking.id || booking._id);
+        try {
+            // 1. Create Order
+            const { data: orderData } = await api.post('/payments/create-order', {
+                bookingId: booking.id || booking._id
+            });
+
+            const { order } = orderData.data;
+
+            // 2. Open Razorpay Modal
+            const options = {
+                key: RAZORPAY_KEY_ID,
+                amount: order.amount,
+                currency: order.currency,
+                name: "Netlarx Premium",
+                description: `Payment for ${booking.halls?.[0]?.name || 'Booking'}`,
+                order_id: order.id,
+                handler: async function (response) {
+                    try {
+                        // 3. Verify Payment
+                        await api.post('/payments/verify', {
+                            ...response,
+                            bookingId: booking.id || booking._id
+                        });
+                        toast.success('Payment Successful!');
+                        fetchBookings();
+                    } catch (err) {
+                        toast.error('Payment verification failed');
+                    }
+                },
+                prefill: {
+                    name: booking.user?.name || "",
+                    email: booking.user?.email || "",
+                    contact: booking.user?.phone || ""
+                },
+                theme: {
+                    color: "#6366f1"
+                }
+            };
+
+            const rzp = new window.Razorpay(options);
+            rzp.on('payment.failed', function (response) {
+                toast.error('Payment failed: ' + response.error.description);
+            });
+            rzp.open();
+
+        } catch (err) {
+            toast.error(err.response?.data?.message || 'Could not initiate payment');
+        } finally {
+            setProcessingPayment(null);
+        }
+    };
 
     const fetchBookings = async () => {
         try {
@@ -191,8 +247,13 @@ const MyBookings = () => {
                                                         </Button>
                                                     )}
                                                     {booking.status === 'payment-requested' && (
-                                                        <Button className="h-10 px-6 text-[10px] font-black shadow-lg shadow-primary/20 bg-primary group">
-                                                            Settle Revenue <ChevronRight className="w-3 h-3 ml-2 group-hover:translate-x-1 transition-transform" />
+                                                        <Button
+                                                            onClick={() => handlePayment(booking)}
+                                                            disabled={processingPayment === (booking.id || booking._id)}
+                                                            className="h-10 px-6 text-[10px] font-black shadow-lg shadow-primary/20 bg-primary group"
+                                                        >
+                                                            {processingPayment === (booking.id || booking._id) ? 'Connecting...' : 'Settle Revenue'}
+                                                            <ChevronRight className="w-3 h-3 ml-2 group-hover:translate-x-1 transition-transform" />
                                                         </Button>
                                                     )}
                                                 </div>

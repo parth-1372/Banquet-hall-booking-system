@@ -12,6 +12,7 @@ const bookingRoutes = require('./routes/bookingRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const userRoutes = require('./routes/userRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
 
 // Initialize Express app
 const app = express();
@@ -24,7 +25,7 @@ const corsOptions = {
     origin: function (origin, callback) {
         // Allow requests with no origin (like mobile apps or curl)
         if (!origin) return callback(null, true);
-        
+
         const allowedOrigins = [
             env.FRONTEND_CUSTOMER_URL,
             env.FRONTEND_ADMIN_URL,
@@ -82,6 +83,7 @@ app.use('/api/v1/halls', hallRoutes);
 app.use('/api/v1/bookings', bookingRoutes);
 app.use('/api/v1/reviews', reviewRoutes);
 app.use('/api/v1/dashboard', dashboardRoutes);
+app.use('/api/v1/payments', paymentRoutes);
 
 // Handle undefined routes
 app.use(notFoundHandler);

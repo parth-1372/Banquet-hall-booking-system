@@ -4,7 +4,7 @@ import Navbar from '../components/layout/Navbar';
 import Button from '../components/ui/Button';
 import api from '../api/axios';
 import { MapPin, Users, Star, ArrowRight, ChevronRight, CheckCircle2 } from 'lucide-react';
-import { DEFAULT_HALL_IMAGE, DEFAULT_360_IMAGE } from '../utils/assetUrl';
+import { DEFAULT_HALL_IMAGE, DEFAULT_360_IMAGE, getAssetUrl } from '../utils/assetUrl';
 
 const Home = () => {
     const [featuredHalls, setFeaturedHalls] = useState([]);
@@ -27,7 +27,7 @@ const Home = () => {
             if (window.pannellum && document.getElementById('hero-panorama')) {
                 window.pannellum.viewer('hero-panorama', {
                     "type": "equirectangular",
-                    "panorama": DEFAULT_360_IMAGE,
+                    "panorama": getAssetUrl(DEFAULT_360_IMAGE),
                     "autoLoad": true,
                     "autoRotate": -1.5,
                     "showControls": false,
@@ -156,7 +156,7 @@ const Home = () => {
                                         {/* Image */}
                                         <div className="relative h-64 overflow-hidden">
                                             <img
-                                                src={hall.primaryImage || DEFAULT_HALL_IMAGE}
+                                                src={getAssetUrl(hall.primaryImage) || DEFAULT_HALL_IMAGE}
                                                 alt={hall.name}
                                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                             />

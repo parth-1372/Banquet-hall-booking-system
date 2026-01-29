@@ -9,8 +9,11 @@ const {
     toggleFeatured,
     getHallAvailability,
     getAllHallsAdmin,
+    uploadHallImages,
+    uploadHall360Image,
 } = require('../controllers/hallController');
 const { protect, authorize } = require('../middleware/authMiddleware');
+const upload = require('../middleware/uploadMiddleware');
 const {
     validate,
     validateQuery,
@@ -41,5 +44,9 @@ router.patch('/:id', authorize(...ALL_ADMINS), validate(updateHallSchema), updat
 router.delete('/:id', authorize(...ALL_ADMINS), deleteHall);
 router.patch('/:id/featured', authorize(...ALL_ADMINS), toggleFeatured);
 router.get('/admin/all', authorize(...ALL_ADMINS), getAllHallsAdmin);
+
+// Upload routes
+router.post('/:id/images', authorize(...ALL_ADMINS), upload.array('images', 5), uploadHallImages);
+router.post('/:id/360-image', authorize(...ALL_ADMINS), upload.single('panorama'), uploadHall360Image);
 
 module.exports = router;
