@@ -53,11 +53,12 @@ const Sidebar = ({ isOpen, onClose }) => {
 
                 {/* Admin Logo */}
                 <Link to="/" className="p-8 pb-12 flex items-center gap-3 group" onClick={handleLinkClick}>
-                    <div className="w-10 h-10 bg-admin-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-admin-primary/20 group-hover:rotate-12 transition-transform">
-                        <span className="font-bold text-xl">N</span>
+                    <div className="w-10 h-10 bg-admin-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-admin-primary/20 group-hover:rotate-12 transition-transform relative overflow-hidden">
+                        <span className="font-bold text-xl relative z-10">V</span>
+                        <div className="absolute inset-0 bg-white/10 blur-sm group-hover:blur-none transition-all"></div>
                     </div>
                     <div>
-                        <h1 className="text-slate-900 dark:text-white font-bold text-xl tracking-tight">Netlarx</h1>
+                        <h1 className="text-slate-900 dark:text-white font-bold text-xl tracking-tight">VenueVista</h1>
                         <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-admin-primary">Admin Control</p>
                     </div>
                 </Link>

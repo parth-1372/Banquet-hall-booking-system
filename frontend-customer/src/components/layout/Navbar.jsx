@@ -22,9 +22,10 @@ const Navbar = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between h-20 items-center">
                     {/* Logo */}
-                    <Link to="/" className="flex items-center gap-2">
-                        <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
-                            <span className="text-white font-bold text-xl">V</span>
+                    <Link to="/" className="flex items-center gap-2 group">
+                        <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/20 group-hover:rotate-6 transition-transform relative overflow-hidden">
+                            <span className="text-white font-black text-xl relative z-10">V</span>
+                            <div className="absolute inset-0 bg-white/20 blur-md group-hover:blur-none transition-all"></div>
                         </div>
                         <span className="text-2xl font-bold bg-gradient-to-r from-primary to-primary-700 bg-clip-text text-transparent hidden sm:block">
                             VenueVista

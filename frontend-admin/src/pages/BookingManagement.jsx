@@ -56,9 +56,43 @@ const BookingManagement = () => {
         }
     };
 
-    const handleExport = () => {
-        toast.success('Generating PDF report...');
-        setTimeout(() => toast.success('Report downloaded!'), 2000);
+    const handleExport = (type = 'csv') => {
+        if (bookings.length === 0) {
+            toast.error('No data to export');
+            return;
+        }
+
+        if (type === 'pdf') {
+            toast.success('Preparing Print/PDF view...');
+            window.print();
+            return;
+        }
+
+        toast.success('Generating report...');
+
+        // CSV Headers - use more professional names
+        const headers = ['Booking_ID', 'Customer_Name', 'Customer_Email', 'Venue_Name', 'Event_Date', 'Time_Slot', 'Total_Amount_INR', 'Workflow_Status'];
+
+        const rows = bookings.map(b => [
+            b.bookingId,
+            `"${b.user?.name || 'N/A'}"`,
+            b.user?.email || 'N/A',
+            `"${b.halls?.[0]?.name || 'N/A'}"`,
+            new Date(b.eventDate).toLocaleDateString(),
+            b.timeSlot,
+            b.pricing?.totalAmount || 0,
+            b.status
+        ]);
+
+        const csvContent = [headers.join(','), ...rows.map(row => row.join(','))].join('\n');
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', `VenueVista_Revenue_Report_${new Date().toISOString().split('T')[0]}.csv`);
+        link.click();
+
+        toast.success('Report downloaded successfully!');
     };
 
     const statusStyles = {
@@ -182,8 +216,8 @@ const BookingManagement = () => {
                         />
                     </div>
                 </div>
-                <AdminButton variant="secondary" onClick={handleExport} className="w-full sm:w-auto">
-                    <Download className="w-4 h-4" /> Export Report (PDF)
+                <AdminButton variant="secondary" onClick={() => handleExport('pdf')} className="w-full sm:w-auto">
+                    <Download className="w-4 h-4" /> Export/Print Report (PDF)
                 </AdminButton>
             </div>
 

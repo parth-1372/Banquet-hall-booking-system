@@ -53,8 +53,9 @@ const Register = () => {
                     <Link to="/" className="inline-flex items-center text-primary font-semibold hover:underline mb-8">
                         <ArrowLeft className="w-4 h-4 mr-2" /> Back to Home
                     </Link>
-                    <div className="w-20 h-20 bg-primary rounded-3xl mx-auto flex items-center justify-center shadow-lg mb-6 -rotate-3">
-                        <UserPlus className="w-10 h-10 text-white" />
+                    <div className="w-20 h-20 bg-primary rounded-3xl mx-auto flex items-center justify-center shadow-lg mb-6 -rotate-3 relative overflow-hidden group">
+                        <span className="text-white font-black text-3xl relative z-10">V</span>
+                        <div className="absolute inset-0 bg-white/20 blur-md group-hover:blur-none transition-all"></div>
                     </div>
                     <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight">Create Account</h2>
                     <p className="mt-2 text-sm text-slate-600">
