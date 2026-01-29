@@ -8,7 +8,7 @@ import {
     MapPin, Users, Star, CheckCircle, XCircle, Image
 } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { DEFAULT_HALL_IMAGE, DEFAULT_360_IMAGE } from '../utils/assetUrl';
+import { DEFAULT_HALL_IMAGE, DEFAULT_360_IMAGE, getAssetUrl } from '../utils/assetUrl';
 
 const HallManagement = () => {
     const [halls, setHalls] = useState([]);
@@ -225,7 +225,7 @@ const HallManagement = () => {
                                         <td className="px-8 py-6">
                                             <div className="flex items-center gap-5">
                                                 <div className="w-16 h-16 rounded-2xl overflow-hidden bg-slate-100 dark:bg-slate-800 flex-shrink-0 shadow-sm group-hover:shadow-md transition-shadow">
-                                                    <img src={hall.images?.[0] || "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&q=80&w=200"} className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500" />
+                                                    <img src={getAssetUrl(hall.images?.[0]?.url || hall.images?.[0] || hall.primaryImage) || DEFAULT_HALL_IMAGE} className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-500" />
                                                 </div>
                                                 <div>
                                                     <p className="font-bold text-slate-800 dark:text-white text-lg leading-tight mb-1 group-hover:text-admin-primary transition-colors">{hall.name}</p>

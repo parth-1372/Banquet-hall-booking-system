@@ -75,12 +75,13 @@ const HallDetails = () => {
 
                     viewerRef.current = window.pannellum.viewer('panorama', {
                         "type": "equirectangular",
-                        "panorama": getAssetUrl(hall.rotationViewUrl) || DEFAULT_360_IMAGE,
+                        "panorama": hall.rotationViewUrl ? getAssetUrl(hall.rotationViewUrl) : DEFAULT_360_IMAGE,
                         "autoLoad": true,
-                        "autoRotate": -2,
+                        "autoRotate": -1.5,
                         "hfov": 110,
-                        "bookmark": false,
-                        "crossOrigin": "anonymous"
+                        "crossOrigin": "anonymous",
+                        "autoRotateInactivityDelay": 3000,
+                        "showZoomCtrl": true
                     });
                 }
             }, 100);

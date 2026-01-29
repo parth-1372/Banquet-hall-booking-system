@@ -22,6 +22,10 @@ const env = {
     FRONTEND_CUSTOMER_URL: process.env.FRONTEND_CUSTOMER_URL || 'http://localhost:3000',
     FRONTEND_ADMIN_URL: process.env.FRONTEND_ADMIN_URL || 'http://localhost:3001',
 
+    // Razorpay
+    RAZORPAY_KEY_ID: process.env.RAZORPAY_KEY_ID,
+    RAZORPAY_KEY_SECRET: process.env.RAZORPAY_KEY_SECRET,
+
     // Helper to check if in production
     isProduction: () => env.NODE_ENV === 'production',
     isDevelopment: () => env.NODE_ENV === 'development',

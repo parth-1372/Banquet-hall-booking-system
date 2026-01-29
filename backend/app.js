@@ -23,6 +23,11 @@ app.use(helmet());
 // CORS Configuration - Dynamic origin checking for production
 const corsOptions = {
     origin: function (origin, callback) {
+        // In development, allow all origins
+        if (env.NODE_ENV === 'development') {
+            return callback(null, true);
+        }
+
         // Allow requests with no origin (like mobile apps or curl)
         if (!origin) return callback(null, true);
 
@@ -56,6 +61,12 @@ app.use(cookieParser());
 
 // Static Files
 const path = require("path");
+const fs = require('fs');
+
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+}
 
 app.use(
     "/uploads",

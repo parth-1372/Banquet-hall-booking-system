@@ -3,7 +3,7 @@ const { HALL_TYPES } = require('../utils/constants');
 
 // Image schema
 const imageSchema = z.object({
-    url: z.string().url('Please provide a valid image URL'),
+    url: z.string().min(1, 'Image path/URL is required'),
     caption: z.string().max(200, 'Caption cannot exceed 200 characters').optional(),
     isPrimary: z.boolean().optional().default(false),
 });
@@ -90,6 +90,7 @@ const createHallSchema = z.object({
     isActive: z.boolean().optional().default(true),
 
     isFeatured: z.boolean().optional().default(false),
+    rotationViewUrl: z.string().optional(),
 });
 
 // Update hall validation schema (all fields optional)
@@ -135,6 +136,7 @@ const updateHallSchema = z.object({
     isActive: z.boolean().optional(),
 
     isFeatured: z.boolean().optional(),
+    rotationViewUrl: z.string().optional(),
 });
 
 // Query params validation for listing halls
