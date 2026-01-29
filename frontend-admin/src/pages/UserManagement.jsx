@@ -6,8 +6,10 @@ import {
     ToggleLeft, ToggleRight, Search, Filter
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { useAuth } from '../context/AuthContext';
 
 const UserManagement = () => {
+    const { user: currentUser } = useAuth();
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
@@ -119,15 +121,22 @@ const UserManagement = () => {
                                             <select
                                                 value={user.role}
                                                 onChange={(e) => handleRoleUpdate(user.id, e.target.value)}
+                                                disabled={currentUser?.role === 'admin1'}
                                                 className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase border outline-none bg-transparent ${user.role === 'customer'
                                                     ? 'text-sky-700 border-sky-100 dark:text-sky-500 dark:border-sky-900'
                                                     : 'text-indigo-700 border-indigo-100 dark:text-indigo-400 dark:border-indigo-900'
                                                     }`}
                                             >
                                                 <option value="customer">Customer</option>
-                                                <option value="admin1">Admin 1</option>
-                                                <option value="admin2">Admin 2</option>
-                                                <option value="super_admin">Admin 3 (Super)</option>
+                                                {(currentUser?.role === 'super_admin' || currentUser?.role === 'admin2') && (
+                                                    <option value="admin1">Admin 1</option>
+                                                )}
+                                                {currentUser?.role === 'super_admin' && (
+                                                    <>
+                                                        <option value="admin2">Admin 2</option>
+                                                        <option value="super_admin">Admin 3 (Super)</option>
+                                                    </>
+                                                )}
                                             </select>
                                         </td>
                                         <td className="px-8 py-6">

@@ -211,6 +211,37 @@ const updateMyBooking = asyncHandler(async (req, res, next) => {
         },
     });
 });
+
+/**
+ * @desc    Mark payment as complete (Admin2)
+ * @route   POST /api/v1/bookings/:id/mark-payment
+ * @access  Private (Admin2, SuperAdmin)
+ */
+const markPaymentComplete = asyncHandler(async (req, res, next) => {
+    const booking = await Booking.findById(req.params.id).populate('halls user');
+
+    if (!booking) {
+        return next(new AppError('Booking not found', 404));
+    }
+
+    if (booking.status !== BOOKING_STATUS.PAYMENT_REQUESTED) {
+        return next(new AppError('Payment not requested for this booking', 400));
+    }
+
+    // Mark payment as paid
+    booking.paymentStatus = 'paid';
+    booking.status = BOOKING_STATUS.APPROVED_ADMIN2;
+    await booking.save();
+
+    res.status(200).json({
+        status: 'success',
+        message: 'Payment marked as complete. Booking forwarded to Admin3 for final approval.',
+        data: {
+            booking,
+        },
+    });
+});
+
 const getBooking = asyncHandler(async (req, res, next) => {
     const booking = await Booking.findById(req.params.id)
         .populate('halls', 'name description location contactInfo images pricing')
@@ -644,5 +675,6 @@ module.exports = {
     admin1Process,
     admin2Process,
     admin3Process,
-    updateMyBooking
+    updateMyBooking,
+    markPaymentComplete
 };

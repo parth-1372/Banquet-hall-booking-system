@@ -110,9 +110,25 @@ const BookingManagement = () => {
             return (
                 <div className="space-y-1">
                     <p className="text-[9px] text-slate-400 font-bold mb-1">Step 2b: Payment Verification</p>
-                    <AdminButton size="sm" onClick={() => handleAction(booking.id || booking._id, 'approve')}>
-                        Verify Payment & Forward
-                    </AdminButton>
+                    <div className="flex flex-col gap-2">
+                        <AdminButton
+                            size="sm"
+                            onClick={async () => {
+                                try {
+                                    await api.post(`/bookings/${booking.id || booking._id}/mark-payment`);
+                                    toast.success('Payment marked as complete!');
+                                    fetchBookings();
+                                } catch (err) {
+                                    toast.error(err.response?.data?.message || 'Failed to mark payment');
+                                }
+                            }}
+                        >
+                            ✓ Mark Paid & Forward
+                        </AdminButton>
+                        <AdminButton size="sm" variant="danger" onClick={() => handleAction(booking.id || booking._id, 'reject')}>
+                            Reject
+                        </AdminButton>
+                    </div>
                 </div>
             );
         }

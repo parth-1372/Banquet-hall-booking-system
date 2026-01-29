@@ -12,7 +12,8 @@ const {
     admin1Process,
     admin2Process,
     admin3Process,
-    updateMyBooking
+    updateMyBooking,
+    markPaymentComplete
 } = require('../controllers/bookingController');
 const { protect, authorize } = require('../middleware/authMiddleware');
 const {
@@ -77,6 +78,12 @@ router.patch(
     '/:id/admin2-process',
     authorize(USER_ROLES.ADMIN2, USER_ROLES.SUPER_ADMIN),
     admin2Process
+);
+
+router.post(
+    '/:id/mark-payment',
+    authorize(USER_ROLES.ADMIN2, USER_ROLES.SUPER_ADMIN),
+    markPaymentComplete
 );
 
 router.patch(
