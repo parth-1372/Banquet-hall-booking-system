@@ -19,10 +19,28 @@ const app = express();
 // Security Middleware - Helmet (sets various HTTP headers)
 app.use(helmet());
 
-// CORS Configuration
+// CORS Configuration - Dynamic origin checking for production
 const corsOptions = {
-    origin: [env.FRONTEND_CUSTOMER_URL, env.FRONTEND_ADMIN_URL],
-    credentials: true, // Allow cookies to be sent
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl)
+        if (!origin) return callback(null, true);
+        
+        const allowedOrigins = [
+            env.FRONTEND_CUSTOMER_URL,
+            env.FRONTEND_ADMIN_URL,
+            'http://localhost:3000',
+            'http://localhost:3001',
+            'http://localhost:5173',
+            'http://localhost:5174'
+        ].filter(Boolean); // Remove any undefined values
+
+        if (allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
 };
