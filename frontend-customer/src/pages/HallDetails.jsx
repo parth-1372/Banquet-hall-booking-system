@@ -10,6 +10,7 @@ import {
     Clock, CreditCard, ChevronLeft, Image as ImageIcon, Share2, Heart
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { DEFAULT_HALL_IMAGE, DEFAULT_360_IMAGE } from '../utils/assetUrl';
 
 const HallDetails = () => {
     const { id } = useParams();
@@ -59,7 +60,7 @@ const HallDetails = () => {
                 if (window.pannellum) {
                     window.pannellum.viewer('panorama', {
                         "type": "equirectangular",
-                        "panorama": hall.rotationViewUrl || 'http://localhost:5000/uploads/hall_360.png',
+                        "panorama": hall.rotationViewUrl || DEFAULT_360_IMAGE,
                         "autoLoad": true,
                         "autoRotate": -2,
                         "hfov": 110,
@@ -153,7 +154,7 @@ const HallDetails = () => {
                         <div className="relative rounded-3xl overflow-hidden shadow-2xl group border-8 border-white dark:border-slate-900 bg-slate-200 dark:bg-slate-800 aspect-video">
                             {viewMode === 'photo' ? (
                                 <img
-                                    src={hall.primaryImage || "http://localhost:5000/uploads/hall_main.png"}
+                                    src={hall.primaryImage || DEFAULT_HALL_IMAGE}
                                     alt={hall.name}
                                     className="w-full h-full object-cover"
                                 />

@@ -26,7 +26,7 @@ const createSendToken = (user, statusCode, res, message = 'Success') => {
         ),
         httpOnly: true, // Cannot be accessed by client-side JS
         secure: env.isProduction(), // Only send over HTTPS in production
-        sameSite: env.isProduction() ? 'strict' : 'lax',
+        sameSite: env.isProduction() ? 'none' : 'lax', // 'none' required for cross-domain cookies in production
     };
 
     // Set cookie

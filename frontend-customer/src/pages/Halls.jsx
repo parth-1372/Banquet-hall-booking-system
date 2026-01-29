@@ -5,6 +5,7 @@ import { Search, MapPin, Users, Star, SlidersHorizontal, ArrowRight, Calendar } 
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/ui/Button';
 import toast from 'react-hot-toast';
+import { DEFAULT_HALL_IMAGE } from '../utils/assetUrl';
 
 const Halls = () => {
     const [halls, setHalls] = useState([]);
@@ -259,7 +260,7 @@ const Halls = () => {
                                         >
                                             <div className="relative h-52 sm:h-56 flex-shrink-0">
                                                 <img
-                                                    src={hall.primaryImage || "http://localhost:5000/uploads/hall_main.png"}
+                                                    src={hall.primaryImage || DEFAULT_HALL_IMAGE}
                                                     alt={hall.name}
                                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                                 />
